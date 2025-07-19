@@ -32,7 +32,6 @@ admins = ['55770036341','5770036341']
 
 
 
-#تحديث جديد
 
 
 
@@ -266,12 +265,7 @@ import time
 from telebot import types
 
 MAX_LINES = 10000
-stopuser = {}  # لتعقب حالة كل مستخدم
-
-# تعريف المتغيرات لتخزين حالة كل بوابة
-
-
-# تعريف المتغيرات لحالة البوابات
+stopuser = {}  
 check_enabled_br1 = True
 check_enabled_br2 = True
 check_enabled_br3 = True
@@ -403,7 +397,6 @@ def disable_br3(message):
 
 from telebot import types
 
-# تعريف المتغيرات لحالة البوابات
 check_enabled_br1 = True
 check_enabled_br2 = True
 check_enabled_br3 = True
@@ -461,11 +454,11 @@ def handle_toggle(call):
         status = 'Enable✅' if check_enabled_ch1 else 'Disable❌'
         bot.answer_callback_query(call.id, f"Braintree Charge 1 is now {status}.")
     elif call.data == 'set_limits':
-        # إرسال رسالة للمستخدم لإدخال قيمة جديدة لـ MAX_LINES
+        
         bot.send_message(chat_id, "Please enter the new limit value for Gate limits as /set_limit 1500")
 
-    # تحديث الرسالة لعرض الحالة الجديدة
-    markup = types.InlineKeyboardMarkup(row_width=1)
+    
+    markup = typesطط.InlineKeyboardMarkup(row_width=1)
     br1_button = types.InlineKeyboardButton(f"Braintree Auth 1 ({'Enable✅' if check_enabled_br1 else 'Disable❌'})", callback_data='toggle_br1')
     br2_button = types.InlineKeyboardButton(f"Braintree Auth 2 ({'Enable✅' if check_enabled_br2 else 'Disable❌'})", callback_data='toggle_br2')
     br3_button = types.InlineKeyboardButton(f"Braintree Auth 3 ({'Enable✅' if check_enabled_br3 else 'Disable❌'})", callback_data='toggle_br3')
@@ -480,13 +473,13 @@ def handle_toggle(call):
 def set_limit(message):
     global MAX_LINES
     try:
-        # Extract the new limit value from the command
+        
         if len(message.text.split()) == 2 and message.text.split()[1].isdigit():
             new_limit = int(message.text.split()[1])
             MAX_LINES = new_limit
             bot.reply_to(message, f"Gate limit has been set to {MAX_LINES}.")
             
-            # تحديث قائمة الخيارات في الرسالة
+            
             show_menu(message)
         else:
             bot.reply_to(message, "Please use the correct format: /set_limit 1500.")
@@ -509,8 +502,8 @@ import time
 from telebot import types
 
 MAX_LINES = 1000
-stopuser = {}  # لتعقب حالة كل مستخدم
-check_enabled = True  # لتتبع ما إذا كان الفحص مفعلًا أم لا
+stopuser = {}  
+check_enabled = True 
 
 @bot.message_handler(commands=['offb1'])
 def handle_admin_commands(message):
@@ -534,18 +527,17 @@ def handle_admin_commands(message):
 def menu_callback(call):
     id = str(call.from_user.id)
 
-    if not check_enabled_br1:  # تحقق من حالة بوابة رقم واحد
+    if not check_enabled_br1:  
         bot.send_message(chat_id=call.message.chat.id, text="- Gateway is under maintenance ❌.")
         return
 
-    # تحقق مما إذا كان المستخدم لديه فحص جاري
+    
     if id in stopuser and stopuser[id]['status'] == 'start':
         bot.send_message(
             chat_id=call.message.chat.id,
             text="- You Are Already Checking A Combo. 🔄 Please Wait Until It Finishes Or Stop It Manually."
         )
-        return  # إذا كان هناك فحص جاري، نخرج من الدالة ولا نبدأ فحص جديد
-
+        return  
     def my_function():
         gate = 'Braintree Auth 1'
         dd = 0
@@ -567,7 +559,7 @@ def menu_callback(call):
                 lines = file.readlines()
                 total_lines = len(lines)
 
-                # تحقق من عدد الأسطر
+                
                 if total_lines > MAX_LINES:
                     bot.send_message(
                         chat_id=call.message.chat.id,
@@ -577,7 +569,7 @@ def menu_callback(call):
                             "• 𝐂𝐇𝐄𝐂𝐊 𝐘𝐎𝐔𝐑 𝐅𝐈𝐋𝐄 𝐀𝐍𝐃 𝐓𝐑𝐘 𝐀𝐆𝐀𝐈𝐍 📣"
                         )
                     )
-                    stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص
+                    stopuser[id]['status'] = 'stopped'  
                     return
 
                 stopuser[id] = {'status': 'start'}
@@ -585,7 +577,7 @@ def menu_callback(call):
                 for cc in lines:
                     if stopuser[id]['status'] == 'stop':
                         bot.send_message(chat_id=id, text='- Done Stop Check Cards 📣⚡')
-                        stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص
+                        stopuser[id]['status'] = 'stopped'  
                         return
                     start_time = time.time()
                     try:
@@ -637,7 +629,7 @@ def menu_callback(call):
         except Exception as error:
             bot.send_message(admins[0], f'Error -> {error}')
 
-        stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص بعد الانتهاء
+        stopuser[id]['status'] = 'stopped'  
         bot.send_message(chat_id=call.message.chat.id, text='- Done Check All Cards ✅\n - Programmer • @HRO_X')
 
     my_thread = threading.Thread(target=my_function)
@@ -677,8 +669,8 @@ import time
 from telebot import types
 
 MAX_LINES = 10000
-stopuser = {}  # لتعقب حالة كل مستخدم
-check_enabled_br2 = True  # لتتبع ما إذا كان فحص Braintree Auth 2 مفعلًا أم لا
+stopuser = {}  
+check_enabled_br2 = True  
 
 @bot.message_handler(commands=['offb2'])
 def handle_admin_commands(message):
@@ -706,14 +698,13 @@ def menu_callback(call):
         bot.send_message(chat_id=call.message.chat.id, text="- Gateway is under maintenance ❌.")
         return
 
-    # تحقق مما إذا كان المستخدم لديه فحص جاري
+    
     if id in stopuser and stopuser[id]['status'] == 'start':
         bot.send_message(
             chat_id=call.message.chat.id,
             text="- You Are Already Checking A Combo. 🔄 Please Wait Until It Finishes Or Stop It Manually."
         )
-        return  # إذا كان هناك فحص جاري، نخرج من الدالة ولا نبدأ فحص جديد
-
+        return  
     def my_function():
         gate = 'Braintree Auth 2'
         dd = 0
@@ -735,7 +726,7 @@ def menu_callback(call):
                 lines = file.readlines()
                 total_lines = len(lines)
 
-                # تحقق من عدد الأسطر
+                
                 if total_lines > MAX_LINES:
                     bot.send_message(
                         chat_id=call.message.chat.id,
@@ -745,7 +736,7 @@ def menu_callback(call):
                             "• 𝐂𝐇𝐄𝐂𝐊 𝐘𝐎𝐔𝐑 𝐅𝐈𝐋𝐄 𝐀𝐍𝐃 𝐓𝐑𝐘 𝐀𝐆𝐀𝐈𝐍 📣"
                         )
                     )
-                    stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص
+                    stopuser[id]['status'] = 'stopped'  
                     return
 
                 stopuser[id] = {'status': 'start'}
@@ -753,7 +744,7 @@ def menu_callback(call):
                 for cc in lines:
                     if stopuser[id]['status'] == 'stop':
                         bot.send_message(chat_id=id, text='- Done Stop Check Cards 📣⚡')
-                        stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص
+                        stopuser[id]['status'] = 'stopped'  
                         return
                     start_time = time.time()
                     try:
@@ -805,7 +796,7 @@ def menu_callback(call):
         except Exception as error:
             bot.send_message(admins[0], f'Error -> {error}')
 
-        stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص بعد الانتهاء
+        stopuser[id]['status'] = 'stopped'  
         bot.send_message(chat_id=call.message.chat.id, text='- Done Check All Cards ✅\n - Programmer • @HRO_X')
 
     my_thread = threading.Thread(target=my_function)
@@ -851,9 +842,8 @@ import time
 from telebot import types
 
 MAX_LINES = 10000
-stopuser = {}  # لتعقب حالة كل مستخدم
-check_enabled_br3 = True  # لتتبع ما إذا كان فحص Braintree Auth 3 مفعلًا أم لا
-
+stopuser = {}  
+check_enabled_br3 = True  
 @bot.message_handler(commands=['offb3'])
 def handle_admin_commands(message):
     global check_enabled_br3
@@ -1028,9 +1018,8 @@ import time
 from telebot import types
 
 MAX_LINES = 10000
-stopuser = {}  # لتعقب حالة كل مستخدم
-check_enabled_br4 = True  # لتتبع ما إذا كان فحص Braintree Auth 4 مفعلًا أم لا
-
+stopuser = {}  
+check_enabled_br4 = True  
 @bot.message_handler(commands=['offb4'])
 def handle_admin_commands(message):
     global check_enabled_br4
@@ -1056,15 +1045,12 @@ def menu_callbactok(call):
     if not check_enabled_br4:
         bot.send_message(chat_id=call.message.chat.id, text="- Gateway is under maintenance ❌.")
         return
-
-    # تحقق مما إذا كان المستخدم لديه فحص جاري
     if id in stopuser and stopuser[id]['status'] == 'start':
         bot.send_message(
             chat_id=call.message.chat.id,
             text="- You Are Already Checking A Combo. 🔄 Please Wait Until It Finishes Or Stop It Manually."
         )
-        return  # إذا كان هناك فحص جاري، نخرج من الدالة ولا نبدأ فحص جديد
-
+        return  
     def my_function():
         gate = 'Braintree Auth 4'
         dd = 0
@@ -1086,7 +1072,7 @@ def menu_callbactok(call):
                 lines = file.readlines()
                 total_lines = len(lines)
                 
-                # تحقق من عدد الأسطر
+                
                 if total_lines > MAX_LINES:
                     bot.send_message(
                         chat_id=call.message.chat.id,
@@ -1096,7 +1082,7 @@ def menu_callbactok(call):
                             "• 𝐂𝐇𝐄𝐂𝐊 𝐘𝐎𝐔𝐑 𝐅𝐈𝐋𝐄 𝐀𝐍𝐃 𝐓𝐑𝐘 𝐀𝐆𝐀𝐈𝐍 📣"
                         )
                     )
-                    stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص
+                    stopuser[id]['status'] = 'stopped'  
                     return
                 
                 stopuser[id] = {'status': 'start'}
@@ -1104,7 +1090,7 @@ def menu_callbactok(call):
                 for cc in lines:
                     if stopuser[id]['status'] == 'stop':
                         bot.send_message(chat_id=id, text='- Done Stop Check Cards 📣⚡')
-                        stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص
+                        stopuser[id]['status'] = 'stopped'  
                         return
                     start_time = time.time()
                     try:
@@ -1155,7 +1141,7 @@ def menu_callbactok(call):
         except Exception as error:
             bot.send_message(admins[0], f'Error -> {error}')
         
-        stopuser[id]['status'] = 'stopped'  # تحرير حالة الفحص بعد الانتهاء
+        stopuser[id]['status'] = 'stopped'  
         bot.send_message(chat_id=call.message.chat.id, text='- Done Check All Cards ✅\n - Programmer • @HRO_X')
 
     my_thread = threading.Thread(target=my_function)
@@ -1206,7 +1192,7 @@ def stop_check(call):
 import json
 from datetime import datetime, timedelta
 
-# دالة تحقق من خطة المستخدم
+
 def check_user_plan(user_id):
     with open('data.json', 'r') as file:
         json_data = json.load(file)
@@ -1218,7 +1204,7 @@ def check_user_plan(user_id):
             try:
                 provided_time = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
                 current_time = datetime.now()
-                if current_time - provided_time <= timedelta(hours=0):  # قم بتعديل فترة الاشتراك حسب الحاجة
+                if current_time - provided_time <= timedelta(hours=0):  
                     return True
             except Exception as e:
                 return False
@@ -1236,10 +1222,9 @@ def check_user_plan(user_id):
 import time
 from datetime import datetime, timedelta
 
-# قم بتعريف قاموس لتخزين وقت آخر طلب لكل مستخدم
+
 command_usage = {}
 
-# الحالة الافتراضية لبوابة رقم 1 (مفعلة)
 check_enabled_br1 = True
 
 @bot.message_handler(commands=['offb1'])
@@ -1266,21 +1251,21 @@ def respond_to_vhk(message):
     user_id = message.chat.id
     current_time = datetime.now()
 
-    # تحقق من حالة بوابة رقم 1
+    
     if not check_enabled_br1:
         bot.reply_to(message, "<b>- Gateway is under maintenance ❌.</b>", parse_mode="HTML")
         return
 
-    # تحقق من وجود آخر وقت استخدام للأمر للمستخدم
+    
     if user_id in command_usage:
         last_time = command_usage[user_id]['last_time']
         time_diff = (current_time - last_time).seconds
-        # تحقق مما إذا كان الوقت الفاصل أقل من 30 ثانية
+        
         if time_diff < 30:
             bot.reply_to(message, f"<b>Try again after {30 - time_diff} seconds.</b>", parse_mode="HTML")
             return
     
-    # تحديث وقت آخر طلب
+    
     command_usage[user_id] = {'last_time': current_time}
 
     if check_user_plan(user_id):
@@ -1363,10 +1348,10 @@ Programmer - @HRO_X''')
 import time
 from datetime import datetime, timedelta
 
-# قم بتعريف قاموس لتخزين وقت آخر طلب لكل مستخدم
+
 command_usage = {}
 
-# الحالة الافتراضية لبوابة رقم 2 (مفعلة)
+
 check_enabled_br2 = True
 
 @bot.message_handler(commands=['offb2'])
@@ -1393,21 +1378,21 @@ def respond_to_vhk(message):
     user_id = message.chat.id
     current_time = datetime.now()
 
-    # تحقق من حالة بوابة رقم 2
+    
     if not check_enabled_br2:
         bot.reply_to(message, "<b>- Gateway is under maintenance ❌.</b>", parse_mode="HTML")
         return
 
-    # تحقق من وجود آخر وقت استخدام للأمر للمستخدم
+    
     if user_id in command_usage:
         last_time = command_usage[user_id]['last_time']
         time_diff = (current_time - last_time).seconds
-        # تحقق مما إذا كان الوقت الفاصل أقل من 30 ثانية
+        
         if time_diff < 30:
             bot.reply_to(message, f"<b>Try again after {30 - time_diff} seconds.</b>", parse_mode="HTML")
             return
     
-    # تحديث وقت آخر طلب
+    
     command_usage[user_id] = {'last_time': current_time}
 
     if check_user_plan(user_id):
@@ -1481,10 +1466,10 @@ Programmer - @HRO_X''')
 import time
 from datetime import datetime, timedelta
 
-# قم بتعريف قاموس لتخزين وقت آخر طلب لكل مستخدم
+
 command_usage = {}
 
-# الحالة الافتراضية لبوابة رقم 3 (مفعلة)
+
 check_enabled_br3 = True
 
 @bot.message_handler(commands=['offb3'])
@@ -1511,21 +1496,21 @@ def respond_to_vhk(message):
     user_id = message.chat.id
     current_time = datetime.now()
 
-    # تحقق من حالة بوابة رقم 3
+    
     if not check_enabled_br3:
         bot.reply_to(message, "<b>- Gateway is under maintenance ❌.</b>", parse_mode="HTML")
         return
 
-    # تحقق من وجود آخر وقت استخدام للأمر للمستخدم
+    
     if user_id in command_usage:
         last_time = command_usage[user_id]['last_time']
         time_diff = (current_time - last_time).seconds
-        # تحقق مما إذا كان الوقت الفاصل أقل من 30 ثانية
+        
         if time_diff < 30:
             bot.reply_to(message, f"<b>Try again after {30 - time_diff} seconds.</b>", parse_mode="HTML")
             return
     
-    # تحديث وقت آخر طلب
+    
     command_usage[user_id] = {'last_time': current_time}
 
     if check_user_plan(user_id):
@@ -1600,10 +1585,10 @@ Programmer - @HRO_X''')
 import time
 from datetime import datetime, timedelta
 
-# قم بتعريف قاموس لتخزين وقت آخر طلب لكل مستخدم
+
 command_usage = {}
 
-# الحالة الافتراضية لبوابة رقم 4 (مفعلة)
+
 check_enabled_br4 = True
 
 @bot.message_handler(commands=['offb4'])
@@ -1630,21 +1615,21 @@ def respond_to_vhk(message):
     user_id = message.chat.id
     current_time = datetime.now()
     
-    # تحقق من حالة بوابة رقم 4
+    
     if not check_enabled_br4:
         bot.reply_to(message, "<b>- Gateway is under maintenance ❌.</b>", parse_mode="HTML")
         return
 
-    # تحقق من وجود آخر وقت استخدام للأمر للمستخدم
+    
     if user_id in command_usage:
         last_time = command_usage[user_id]['last_time']
         time_diff = (current_time - last_time).seconds
-        # تحقق مما إذا كان الوقت الفاصل أقل من 30 ثانية
+        
         if time_diff < 30:
             bot.reply_to(message, f"<b>Try again after {30 - time_diff} seconds.</b>", parse_mode="HTML")
             return
     
-    # تحديث وقت آخر طلب
+    
     command_usage[user_id] = {'last_time': current_time}
 
     if check_user_plan(user_id):
@@ -1768,10 +1753,10 @@ Programmer - @HRO_X''')
 
 from datetime import datetime, timedelta
 
-# قم بإنشاء قاموس لتتبع آخر وقت استخدم فيه كل مستخدم الأمر
+
 last_command_usage = {}
 
-# الحالة الافتراضية لبوابة رقم 1 (مفعلة)
+
 check_enabled_ch1 = True
 
 @bot.message_handler(commands=['offch1'])
@@ -1798,19 +1783,19 @@ def respond_to_vhk(message):
     user_id = message.chat.id
     current_time = datetime.now()
 
-    # تحقق من حالة بوابة رقم 1
+    
     if not check_enabled_ch1:
         bot.reply_to(message, "<b>- Gateway is under maintenance ❌.</b>", parse_mode="HTML")
         return
 
-    # تحقق من آخر وقت استخدم فيه المستخدم الأمر
+    
     if user_id in last_command_usage:
         time_diff = (current_time - last_command_usage[user_id]).seconds
-        if time_diff < 30:  # إذا كانت المدة أقل من 30 ثانية
+        if time_diff < 30:  
             bot.reply_to(message, f"<b>Try again after {30 - time_diff} seconds.</b>", parse_mode="HTML")
             return
 
-    # تحديث وقت الاستخدام الأخير
+    
     last_command_usage[user_id] = current_time
 
     if check_user_plan(user_id):
@@ -1945,12 +1930,12 @@ def notify_user(user_id):
 
 def update_subscription_status():
     try:
-        # قراءة بيانات المستخدمين من ملف data.json
+        
         with open('data.json', 'r') as file:
             json_data = json.load(file)
         
         current_time = datetime.now()
-        updated = False  # لنعرف إذا كانت هناك تحديثات
+        updated = False  
 
         for user_id, user_data in json_data.items():
             timer_str = user_data.get('timer', None)
@@ -1960,11 +1945,11 @@ def update_subscription_status():
                     
                     if current_time > expiration_time:
                         user_data['plan'] = 'Free - Not Subscribed'
-                        del user_data['timer']  # حذف الوقت بعد التحديث
+                        del user_data['timer']  
                         updated = True
-                        # إرسال إشعار إلى الأدمن
+                        
                         notify_admins(user_id, user_data)
-                        # إرسال إشعار إلى المستخدم
+                        
                         notify_user(user_id)
                 except ValueError:
                     m = (f"Date format error for user {user_id} with date {timer_str}")
@@ -1980,9 +1965,7 @@ def update_subscription_status():
 def schedule_check():
     while True:
         update_subscription_status()
-        time.sleep(1)  # تحقق كل دقيقة
-
-# بدء عملية التحقق من الاشتراكات في خيط منفصل
+        time.sleep(1)  
 check_thread = threading.Thread(target=schedule_check)
 check_thread.start()
 
@@ -2003,7 +1986,7 @@ check_thread.start()
 import json
 from datetime import datetime, timedelta
 
-# دالة تحقق من خطة المستخدم
+
 def check_user_plan(user_id):
     with open('data.json', 'r') as file:
         json_data = json.load(file)
@@ -2015,7 +1998,7 @@ def check_user_plan(user_id):
             try:
                 provided_time = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
                 current_time = datetime.now()
-                if current_time - provided_time <= timedelta(hours=0):  # قم بتعديل فترة الاشتراك حسب الحاجة
+                if current_time - provided_time <= timedelta(hours=0):  
                     return True
             except Exception as e:
                 print(f"Error parsing date for user {user_id}: {e}")
@@ -2036,7 +2019,7 @@ def qwwe(message):
             mes = message.text.replace("/kil ", "")
             bot.send_message(idd, mes)
 
-            # إرسال الرسائل للمشتركين من data.json
+            
             with open('data.json', 'r') as file:
                 json_data = json.load(file)
 
@@ -2083,7 +2066,7 @@ def adode(message):
                     date_str = timer.split('.')[0]
                     provided_time = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
                     current_time = datetime.now()
-                    if current_time - provided_time <= timedelta(hours=0):  # قم بتعديل فترة الاشتراك حسب الحاجة
+                    if current_time - provided_time <= timedelta(hours=0):  
                         vip_count += 1
                 except Exception as e:
                     print(f"Error parsing date for user {user_id}: {e}")
@@ -2132,7 +2115,7 @@ def show_vip_subscribers(message):
                 else:
                     expiration_date_str = 'NO EXPIRATION DATE'
                 
-                # الحصول على تفاصيل المستخدم
+                
                 try:
                     chat = bot.get_chat(user_id)
                     user_name = chat.first_name
@@ -2140,10 +2123,10 @@ def show_vip_subscribers(message):
                     if user_name:
                         user_display = f"Name: {user_name}\nUsername: @{user_username}" if user_username else f"Name: {user_name}\nUsername: Not Available"
                     else:
-                        # Skip users with no valid name
+                        
                         continue
                 except Exception as e:
-                    # Skip users with errors retrieving data
+                    
                     continue
                 
                 subscriber_details.append(f'''• User ID: {user_id}
@@ -2179,16 +2162,14 @@ from datetime import datetime
 
 def remove_subscription(user_id):
     try:
-        # قراءة بيانات المستخدمين من ملف data.json
+        
         with open('data.json', 'r') as file:
             json_data = json.load(file)
         
         if user_id in json_data:
-            # تحويل الخطة إلى FREE
-            json_data[user_id]['plan'] = 'Free - Not Subscribed'
-            del json_data[user_id]['timer']  # حذف الوقت إن وجد
             
-            # كتابة البيانات المعدلة إلى data.json
+            json_data[user_id]['plan'] = 'Free - Not Subscribed'
+            del json_data[user_id]['timer']  
             with open('data.json', 'w') as file:
                 json.dump(json_data, file, indent=2, ensure_ascii=False)
             p = (f"Subscription for user {user_id} has been set to FREE.")
@@ -2203,7 +2184,7 @@ def qwwem(message):
     if str(message.chat.id) in admins:
         user_id = message.text.replace("/dele ", "")
         
-        # تحويل اشتراك المستخدم إلى FREE
+        
         remove_subscription(user_id)
         
         try:
@@ -2243,8 +2224,7 @@ def qwwem(message):
 def send_user_info(message):
     user_id = message.from_user.id
     user_first_name = message.from_user.first_name
-    user_username = message.from_user.username or 'NoUsername'  # التعامل مع حالة عدم وجود اسم مستخدم
-    
+    user_username = message.from_user.username or 'NoUsername'  
     response_message = f'''🌟 Welcome » {user_first_name}
 🆔 ID » <code>{user_id}</code>
 📛 Name » {user_first_name}
@@ -2307,7 +2287,7 @@ from datetime import datetime, timedelta
 import random
 import string
 
-# وظيفة توليد كود
+
 @bot.message_handler(commands=["code"])
 def generate_code(message):
     def my_function():
@@ -2368,33 +2348,33 @@ def generate_code(message):
     
     
 
-# وظيفة استرداد كود
+
 @bot.message_handler(func=lambda message: message.text.lower().startswith('.redeem') or message.text.lower().startswith('/redeem'))
 def respond_to_vbv(message):
     def my_function():
         try:
-            # استخراج الكود من الرسالة
+            
             re = message.text.split(' ')[1]
             
-            # قراءة البيانات من data.json
+            
             with open('data.json', 'r') as file:
                 json_data = json.load(file)
             
-            # تحقق من وجود الكود في البيانات
+            
             if re in json_data:
                 timer = json_data[re].get('timer', 'Unknown')
                 typ = json_data[re].get('plan', 'Free - Not Subscribed')
 
-                # تحديث بيانات المستخدم الحالي
+                
                 json_data[str(message.from_user.id)] = {
                     'timer': timer,
                     'plan': typ
                 }
                 
-                # حذف الكود القديم
+                
                 del json_data[re]
                 
-                # كتابة البيانات المعدلة إلى data.json
+                
                 with open('data.json', 'w') as file:
                     json.dump(json_data, file, indent=2, ensure_ascii=False)
 
@@ -2433,7 +2413,7 @@ def respond_to_vbv(message):
     
     
 
-# وظيفة إضافة مستخدم جديد إلى خطة VIP
+
 @bot.message_handler(commands=['add'])
 def add_subscription(message):
     def my_function():
@@ -2449,21 +2429,21 @@ def add_subscription(message):
                 expiration_time_str = expiration_time.strftime("%Y-%m-%d %H:%M")
                 plan = 'VIP Subscribed'
                 
-                # قراءة البيانات من data.json
+                
                 with open('data.json', 'r') as json_file:
                     existing_data = json.load(json_file)
                 
-                # تحديث بيانات المستخدم الجديد
+                
                 existing_data[user_id] = {
                     'timer': expiration_time_str,
                     'plan': plan
                 }
                 
-                # كتابة البيانات المعدلة إلى data.json
+                
                 with open('data.json', 'w') as json_file:
                     json.dump(existing_data, json_file, ensure_ascii=False, indent=4)
                 
-                # الحصول على تفاصيل المستخدم
+                
                 try:
                     chat = bot.get_chat(user_id)
                     frs = chat.first_name
