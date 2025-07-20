@@ -19,7 +19,7 @@ import time
 from telebot import types
 
 stopuser = {}
-token = "8184768129:AAHuiUPQn5f8she-bVyGyKbkcluH8w8_TJk"
+token = "8153463474:AAG5GyDDvReiW1bJggZcNHLlmJ1qopEWM5E"
 bot=telebot.TeleBot(token,parse_mode="HTML")
 
 
@@ -30,7 +30,12 @@ myid = ['5770036341']
 admins = ['55770036341','5770036341']
 
 
+import telebot
+from telebot.types import LabeledPrice, ShippingOption, PreCheckoutQuery
+from datetime import datetime, timedelta
 
+
+     
 
 
 
@@ -70,29 +75,29 @@ def start(message):
 				json.dump(existing_data, json_file, ensure_ascii=False, indent=4)
 		if BL == 'Free - Not Subscribed':	
 			keyboard = types.InlineKeyboardMarkup()
-			contact_button = types.InlineKeyboardButton(text="ϟ Programmer - 𝐡𝐢𝐫𝐨 ", url=f"https://t.me/@HRO_X")
+			contact_button = types.InlineKeyboardButton(text="ϟ Devloper bot ϟ", url=f"https://t.me/@HRO_X")
 			keyboard.add(contact_button)
 			random_number = random.randint(4, 17)
 			photo_url = f'https://t.me/For_Hiro/{random_number}'
-			bot.send_photo(chat_id=message.chat.id, photo=photo_url, caption=f'''<b>ϟ Welcome Dear -> {name} ϟ
+			bot.send_photo(chat_id=message.chat.id, photo=photo_url, caption=f'''ϟ Welcome Dear -> {name} ϟ
 ϟ Youre Not Subscribed in Check World Bot ❌
 
 ϟ For Show Bot Prices Send -> /prices
-ϟ Programmer ~ @HRO_X </b>''',reply_markup=keyboard)
+ϟ Programmer ~ @HRO_X  ''',reply_markup=keyboard)
 			return
 		keyboard = types.InlineKeyboardMarkup()
-		contact_button = types.InlineKeyboardButton(text="ϟ Our Channel ϟ", url="https://t.me/HRO_X")
+		contact_button = types.InlineKeyboardButton(text="ϟ Devloper bot ϟ", url="https://t.me/HRO_X")
 		keyboard.add(contact_button)
 		username = message.from_user.first_name
 		random_number = random.randint(4, 17)
 		photo_url = f'https://t.me/For_Hiro/{random_number}'
-		bot.send_photo(chat_id=message.chat.id, photo=photo_url, caption=f'''<strong>ϟ Welcome -> {name} ϟ
+		bot.send_photo(chat_id=message.chat.id, photo=photo_url, caption=f'''ϟ Welcome -> {name} ϟ
 - Your Subscription is Active ✅
 
 - For Show check commands Send -> /cmds
 - For Check The Combo CC File Send The Combo And Choose The Gate ✅
 
-ϟ - Programmer • @HRO_X </strong>''',reply_markup=keyboard)
+ϟ - Programmer • @HRO_X ''',reply_markup=keyboard)
 	my_thread = threading.Thread(target=my_function)
 	my_thread.start()
 @bot.message_handler(commands=["cmds"])
@@ -107,7 +112,7 @@ def start(message):
 	keyboard = types.InlineKeyboardMarkup()
 	contact_button = types.InlineKeyboardButton(text=f"ϟ {BL} ϟ",callback_data='plan')
 	keyboard.add(contact_button)
-	bot.send_message(chat_id=message.chat.id, text='''<b> 
+	bot.send_message(chat_id=message.chat.id, text='''
 ━━━━━━━━━━━━━━━━━━━
 [ϟ] Name: Braintree Auth 1
 [ϟ] Format: /chk card|month|year|cvv
@@ -139,7 +144,7 @@ def start(message):
 [ϟ] Condition: ON! ✅
 [ϟ] Type: Free For All ✅
 ━━━━━━━━━━━━━━━━━━━
-ϟ - We will adding More Gates....</b>
+ϟ - We will adding More Gates....
 ''',reply_markup=keyboard)
 @bot.message_handler(content_types=["document"])
 def main(message):
@@ -167,11 +172,11 @@ def main(message):
 			keyboard = types.InlineKeyboardMarkup()
 			contact_button = types.InlineKeyboardButton(text="ϟ Programmer - Hiro", url=f"https://t.me/@HRO_X")
 			keyboard.add(contact_button)
-			bot.send_message(chat_id=message.chat.id, text=f'''<b>• Welcome Dear » {name}
+			bot.send_message(chat_id=message.chat.id, text=f'''ϟ Welcome Dear » {name}
 - Youre Not Subscribed in BOT ❌
 
 • For Show Bot Priced Send /prices
-- Programmer ~ @HRO_X - @HRO_X </b>''',reply_markup=keyboard)
+- Programmer ~ @HRO_X ''',reply_markup=keyboard)
 			return
 		with open('data.json', 'r') as file:
 			json_data = json.load(file)
@@ -186,15 +191,15 @@ def main(message):
 - Youre Not Subscribed in BOT ❌
 
 • For Show Bot Priced Send /prices
-- Programmer ~ @HRO_X - @HRO_X </b>''',reply_markup=keyboard)
+- Programmer ~ @HRO_X </b>''',reply_markup=keyboard)
 			return
 		current_time = datetime.now()
 		required_duration = timedelta(hours=0)
 		if current_time - provided_time > required_duration:
 			keyboard = types.InlineKeyboardMarkup()
-			contact_button = types.InlineKeyboardButton(text="ϟ Programmer - Hiro", url=f"https://t.me/@HRO_X")
+			contact_button = types.InlineKeyboardButton(text="ϟ Devloper - Hiro ϟ", url=f"https://t.me/@HRO_X")
 			keyboard.add(contact_button)
-			bot.send_message(chat_id=message.chat.id, text='''<b>ϟ Your Subscription has Expired • لاتستطيع استخدام البوت لانه انتهى اشتراكك </b>
+			bot.send_message(chat_id=message.chat.id, text='''ϟ Your Subscription has Expired • لاتستطيع استخدام البوت لانه انتهى اشتراكك 
 		''',reply_markup=keyboard)
 			with open('data.json', 'r') as file:
 				json_data = json.load(file)
@@ -2268,7 +2273,7 @@ def adodre(message):
 	
 @bot.message_handler(func=lambda message: message.text.lower().startswith('.prices') or message.text.lower().startswith('/prices'))
 def respondn_to_vhk(message):
- bot.reply_to(message,'Soon..... ') 
+ bot.reply_to(message,'- you can donate to bot owner from this command:  /donate') 
 
 
 
