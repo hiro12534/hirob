@@ -185,13 +185,13 @@ def main(message):
 			provided_time = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
 		except Exception as e:
 			keyboard = types.InlineKeyboardMarkup()
-			contact_button = types.InlineKeyboardButton(text="ϟ Programmer - Hiro", url=f"https://t.me/@HRO_X")
+			contact_button = types.InlineKeyboardButton(text="ϟ Programmer - Hiro ϟ", url=f"https://t.me/@HRO_X")
 			keyboard.add(contact_button)
-			bot.send_message(chat_id=message.chat.id, text=f'''<b>• Welcome Dear » {name}
+			bot.send_message(chat_id=message.chat.id, text=f'''• Welcome Dear » {name}
 - Youre Not Subscribed in BOT ❌
 
 • For Show Bot Priced Send /prices
-- Programmer ~ @HRO_X </b>''',reply_markup=keyboard)
+- Programmer ~ @HRO_X ''',reply_markup=keyboard)
 			return
 		current_time = datetime.now()
 		required_duration = timedelta(hours=0)
@@ -2273,7 +2273,7 @@ def adodre(message):
 	
 @bot.message_handler(func=lambda message: message.text.lower().startswith('.prices') or message.text.lower().startswith('/prices'))
 def respondn_to_vhk(message):
- bot.reply_to(message,'- you can donate to bot owner from this command:  /donate') 
+ bot.reply_to(message,'payment methods is soon. ') 
 
 
 
@@ -2305,7 +2305,7 @@ def generate_code(message):
                 existing_data = json.load(json_file)
             
             characters = string.ascii_uppercase + string.digits
-            pas = 'HiroChk-' + '2024' +'-' + ''.join(random.choices(characters, k=4))
+            pas = 'HiroChk-' + '2025' +'-' + ''.join(random.choices(characters, k=4))
             current_time = datetime.now()
             expiration_time = current_time + timedelta(hours=h)
             plan = 'VIP Subscribed'
